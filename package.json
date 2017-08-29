@@ -1,8 +1,11 @@
 {
-  "name": "jwtAuth",
+  "name": "jwtauth",
   "version": "1.0.0",
   "main": "app.js",
   "license": "MIT",
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
