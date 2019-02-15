@@ -50,25 +50,24 @@ let users = [
 // LOGIN ROUTE
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
+    
     // Use your DB ORM logic here to find user and compare password
-    for (let user of users) { // I am using a simple array users which i made above
-        if (username == user.username && password == user.password /* Use your password hash checking logic here !*/) {
-            //If all credentials are correct do this
-            let token = jwt.sign({ id: user.id, username: user.username }, 'keyboard cat 4 ever', { expiresIn: 129600 }); // Sigining the token
-            res.json({
-                sucess: true,
-                err: null,
-                token
-            });
-            break;
-        }
-        else {
-            res.status(401).json({
-                sucess: false,
-                token: null,
-                err: 'Username or password is incorrect'
-            });
-        }
+    
+    // Finds first username and password match in users array (assumes usernames are unique)
+    var user = users.find(u => username == u.username && password == u.password);
+    if (user) { // User credentials matched (are valid)
+        let token = jwt.sign({ id: user.id, username: user.username }, 'keyboard cat 4 ever', { expiresIn: 129600 }); // Sigining the token
+        res.json({
+            sucess: true,
+            err: null,
+            token
+        });
+    } else { // User credentials did not match (are not valid) or no user with this username/password exists
+        res.status(401).json({
+            sucess: false,
+            token: null,
+            err: 'Username or password is incorrect'
+        });
     }
 });
 
